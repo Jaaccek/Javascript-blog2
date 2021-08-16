@@ -11,8 +11,6 @@
     
     const  clickedElement = this;
     console.log('Link was clicked!', event);
-
-    
   
     /* [DONE] remove class 'active' from all article links  */
     
@@ -50,8 +48,6 @@
         console.log(' add class active to the correct article', targetArticle);
 
   }
-  
-  
 
   const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
@@ -82,8 +78,6 @@
                 console.log('get the article id', articleId);
         
             /* find all the articles and save them to variable: articles */
-
-            
 
             /* find the title element */
 
