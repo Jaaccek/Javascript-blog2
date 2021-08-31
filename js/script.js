@@ -51,6 +51,8 @@
   const optArticleTagsSelector = '.post-tags .list';
   const optTagsListSelector = '.tags.list';
   const optArticleAuthorSelector = '.post-author';
+  const optCloudClassCount = '5';
+  const optCloudClassPreix = 'tag-size-';
 
 
   function generateTitleLinks(customSelector = '') {
@@ -110,20 +112,28 @@
     
     for(let tag in tags){
       console.log(tag + ' is used ' + tags[tag] + ' times');
-    }
     
-    if(tags[tag] > params.max){
+    
+      if(tags[tag] > params.max){
       params.max = tags[tag];
-    }
-    if (tags[tag] < params.min) {
+      }
+      if (tags[tag] < params.min) {
       params.min = tags[tag];
+      }
     }
-    
     return params;
   }
   
   calculateTagsParams();
 
+  function calculateTagClass(count, params){
+    const normalizedCount = count - params.min;
+    const normalizedMax = params.max - params.min;
+    const percentage = normalizedCount / normalizedMax;
+    const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+    return optCloudClassPreix + classNumber;
+  }
+  
   function generateTags() {
 
     /* [NEW] create a new variable allTags with an empty array */
@@ -146,7 +156,7 @@
 
       /* split tags into array */
       const articleTagsArray = articleTags.split(' ');
-      console.log(articleTagsArray);
+      //console.log(articleTagsArray);
 
       /* START LOOP: for each tag */
       for (let tag of articleTagsArray) {
@@ -180,30 +190,24 @@
     //tagList.innerHTML = allTags.join(' ');
 
     const tagsParams = calculateTagsParams(allTags);
-    console.log('tagsParams:', tagsParams);
+    //console.log('tagsParams:', tagsParams);
 
     /* [NEW] create variable for all links HTML code */
     let allTagsHTML = '';
 
     /* [NEW] START LOOP: for each tag in allTags: */
     for (let tag in allTags) {
+      
       /* [NEW] generate code of a link and add it to allTagsHTML */
-      allTagsHTML += tag + ' (' + allTags[tag] + ') ';
-    }
-    /* [NEW] END LOOP: for each tag in allTags: */
-
-    /* [NEW] create variable for all links HTML code */
-    let allTagsHtml = '';
-
-    /* [NEW] START LOOP: for each tag in allTags: */
-    for (let tag in allTags) {
-      /* [NEW] generate code of a link and add it to allTagsHTML */
-      allTagsHtml += tag + ' (' + allTags[tag] + ') ';
+      
+      const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + '</a>' + ' </li> ';
+      console.log('tagLinkHTML', tagLinkHTML);
+      allTagsHTML += tagLinkHTML;
     }
     /* [NEW] END LOOP: for each tag in allTags: */
 
     /*[NEW] add HTML from allTagsHTML to tagList */
-    tagList.innerHTML = allTagsHtml;
+    tagList.innerHTML = allTagsHTML;
   }
 
   generateTags();
