@@ -163,7 +163,7 @@
       for (let tag of articleTagsArray) {
 
         /* generate HTML of the link */
-        const linkHTML = '<li><a href="#tag-' + tag + '">' + tag + '</a></li>';
+        const linkHTML = '<li><a href="#tag-' + tag + '">' + tag + '</a></li>';// w allTags jest numerek do tagów
 
         /* add generated code to html variable */
         html = html + linkHTML;
@@ -175,8 +175,10 @@
           allTags[tag] = 1;
         } else {
           allTags[tag]++;
+
         }
 
+        console.log(allTags[tag]);
         /* END LOOP: for each tag */
       }
       /* insert HTML of all the links into the tags wrapper */
@@ -202,7 +204,7 @@
 
       /* [NEW] generate code of a link and add it to allTagsHTML */
 
-      const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + '</a>' + ' </li> ';
+      const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + allTags[tag] + '</a>' + ' </li> ';
       console.log('tagLinkHTML', tagLinkHTML);
       allTagsHTML += tagLinkHTML;
     }
@@ -269,11 +271,31 @@
     }
     /* END LOOP: for each link */
   }
+  function calculateAuthorsParams(authors) {
+    const params = {
+      min: 1,
+      max: 5,
+    };
+    for (let author in authors) {
+      params.max = Math.max(authors[author], params.max);
+      params.min = Math.min(authors[author], params.min);
+    }
+    return params;
+  }
+  calculateAuthorsParams();
+
+  function calculateAuthorClass(count, params) {
+    const normalizedCount = count - params.min;
+    const normalizedMax = params.max - params.min;
+    const percentage = normalizedCount / normalizedMax;
+    const classNumber = Math.floor(percentage * (optAuthorClassCount - 1) + 1);
+    return optAuthorClassPrefix + classNumber;
+  }
 
   function generateAuthors() {
     // Generate authors list
     let allAuthors = {};
-    
+
     /* [DONE] find all articles */
     const articles = document.querySelectorAll(optArticleSelector);
 
@@ -291,33 +313,31 @@
       // console.log(articleAutors);
 
       /* [DONE] generate HTML of the link */
-      const linkHTML = '<span>by </span><a href="#-author' + articleAuthor + '"><span>' + articleAuthor + '</span></a>';
+      const linkHTML = '<span> by </span><a href="#-author' + articleAuthor + '"><span>' + articleAuthor + '</span></a>';
       // console.log(tagLinkHTML);
 
       /* [DONE] add generated code to html variable */
-      html += linkHTML; 
+      html += linkHTML;
       if (!allAuthors[articleAuthor]) {
         allAuthors[articleAuthor] = 1;
       } else {
         allAuthors[articleAuthor]++;
       }
-      authorsWrapper.innerHTML = html;
       
+
       /* [DONE] insert HTML of all the links into the tags wrapper */
-      authorsWrapper.innerHTML = authorsWrapper.innerHTML + linkHTML;
+      authorsWrapper.innerHTML = html;
 
       /* END LOOP: for every article: */
     }
-    const tagsParams = calculateTagsParams(allAuthors);
-    const authorList = document.querySelector(optAuthorsListSelector);
-    let allAuthorsHTML = '';
+    /*const authorList = document.querySelector(optAuthorsListSelector);
+    const authorParams = calculateAuthorParams(authors);
     for (let author in allAuthors) {
-     
-      /* "NEW" generate code of link and add it to allAuthorsHTML */
 
-    allAuthorsHTML += author + " (" + allAuthors[author] + ") ";
-    const authorLinkHTML = '<li><a href="#author-' + author + '"class="' + calculateTagClass(allAuthors[author], tagsParams) + '">' + author + '(' + allAuthors[author] + ')</a></li> ';
-    }
+      /* "NEW" generate code of link and add it to allAuthorsHTML 
+      const authorLinkHTML = '<li><a href="#author-' + author + '"class="' + calculateAuthorClass(allAuthors[author], authorParams) + '">' + author + '(' + allAuthors[author] + ')</a></li> ';
+
+    } */
   }
 
   const authorClickHandler = function (event) {
@@ -381,5 +401,6 @@
   addClickListenersToTags();
   generateAuthors();
   addClickListenersToAuthors();
+  
 }
 

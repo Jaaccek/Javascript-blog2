@@ -88,6 +88,13 @@ body {
 .list-horizontal {
   li {
     display: inline-block;
+
+    & a:after {
+      content: ',\00a0';
+    }
+  }
+  li:last-child a:after{
+    content: '';
   }
 }
 
