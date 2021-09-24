@@ -206,7 +206,7 @@
 
       const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + '</a>' + ' </li> ';
       console.log('tagLinkHTML', tagLinkHTML);
-      allTagsHTML += tagLinkHTML;
+      allTagsHTML = allTagsHTML + tagLinkHTML;
     }
     /* [NEW] END LOOP: for each tag in allTags: */
 
@@ -284,7 +284,7 @@
   }
 
 
-  function calculateAuthorClass(count, params) {
+  function calculateAuthorClass(count, params) {   //nie wykorzystuje tej funkcji
     const normalizedCount = count - params.min;
     const normalizedMax = params.max - params.min;
     const percentage = normalizedCount / normalizedMax;
@@ -330,10 +330,6 @@
     }
     const authorsList = document.querySelector(optAuthorsListSelector);
 
-    /* [NEW] add html from allTags to tagList */
-
-    //tagList.innerHTML = allTags.join(' ');
-
     const authorsParams = calculateAuthorsParams(allAuthors);
     console.log('authorsParams:', authorsParams);
 
@@ -343,14 +339,13 @@
     /* [NEW] START LOOP: for each tag in allAuthors: */
     for (let author in allAuthors) {
 
-      /* [NEW] generate code of a link and add it to allTagsHTML */
-
-      const authorsLinkHTML = '<li><a href="#author-' + author + '">' + author + ' (' + (allAuthors[author]) + ')</a></li>';
+      /* [NEW] generate code of a link and add it to allAuthorsHTML */
+      const authorsLinkHTML = '<li><a href="#-author' + author + '">' + author + ' (' + (allAuthors[author]) + ')</a></li>';
       console.log('authorsLinkHTML', authorsLinkHTML);
-      allAuthorsHTML += authorsLinkHTML
+      allAuthorsHTML += authorsLinkHTML                // tutaj jest coś nie tak
     }
     /* [NEW] END LOOP: for each tag in allAuthors: */
-  
+
     /*[NEW] add HTML from allAuthorsHTML to authorsList */
     authorsList.innerHTML = allAuthorsHTML;
   }
@@ -368,7 +363,7 @@
     //console.log(href);
 
     /* [DONE] make a new constant "tag" and extract tag from the "href" constant */
-    const tag = href.replace('#-author', '');
+    const author = href.replace('#-author', '');
 
     /* [DONE] find all author links with class active */
     const authorLinks = document.querySelectorAll('a.active[href^="#-author"]');
@@ -395,7 +390,7 @@
     /* END LOOP: for each found author link */
 
     /* [DONE] execute function "generateTitleLinks" with article selector as argument */
-    generateTitleLinks('[data-author="' + tag + '"]');
+    generateTitleLinks('[data-author="' + author + '"]');
   }
 
   function addClickListenersToAuthors() {
