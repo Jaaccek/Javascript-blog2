@@ -378,7 +378,7 @@
 
     /*[NEW] add HTML from allAuthorsHTML to authorsList */
     //authorsList.innerHTML = allAuthorsHTML;
-    authorList.innerHTML = templates.authorCloudLink(allAuthorsHTML);
+    authorsList.innerHTML = templates.authorCloudLink(allAuthorsHTML);
   }
 
   const authorClickHandler = function (event) {
