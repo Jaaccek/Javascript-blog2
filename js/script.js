@@ -172,8 +172,8 @@
 
         /* generate HTML of the link */
         //const linkHTML = '<li><a href="#tag-' + tag + '">' + tag + '</a></li>';// w allTags jest numerek do tagów
-        const linkHTMLData = { id: articleTags, title: tag };
-        const linkHTML = templates.articleLink(linkHTMLData);
+        const linkHTMLData = {tag};
+        const linkHTML = templates.articleTag(linkHTMLData);
 
         /* add generated code to html variable */
         html = html + linkHTML;
@@ -394,10 +394,10 @@
     //console.log(href);
 
     /* [DONE] make a new constant "tag" and extract tag from the "href" constant */
-    const author = href.replace('#-author', '');
+    const author = href.replace('#author-', '');
 
     /* [DONE] find all author links with class active */
-    const authorLinks = document.querySelectorAll('a.active[href^="#-author"]');
+    const authorLinks = document.querySelectorAll('a.active[href^="#author-"]');
 
     /* START LOOP: for each active author link */
 
@@ -426,7 +426,7 @@
 
   function addClickListenersToAuthors() {
     /* [DONE] find all links to tags */
-    const allLinksToAuthors = document.querySelectorAll('a[href^="#-author"]');
+    const allLinksToAuthors = document.querySelectorAll('a[href^="#author-"]');
 
     /* START LOOP: for each link */
     for (let link of allLinksToAuthors) {
